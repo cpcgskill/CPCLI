@@ -15,11 +15,6 @@ import logging
 import ast
 import astunparse
 from CPCLI.utils import uidname, formattedPath
-
-logging.basicConfig(
-    format="%(asctime)s [CPCLI] %(levelname)s: %(message)s",
-    level=logging.DEBUG)
-
 import re
 
 py_check = re.compile(r".*\.py[cdowz]?$")
@@ -54,13 +49,12 @@ def filePathToModuleName(file_path):
 
 
 head_template = u"""\
-import sys
-import <<group>>
-<<group>>.<<name>> = sys.modules.get(__name__)
+from sys import modules as __CPCLI_GROUP_SYS_MODULES
+__import__("<<group>>").<<name>> = __CPCLI_GROUP_SYS_MODULES.get(__name__)
 """
 
 
-def group(f_dict, config):
+def _main(group_name, exec_script, f_dict, config):
     u"""
     :type f_dict: dict
     :param f_dict:
@@ -68,20 +62,13 @@ def group(f_dict, config):
     :param config:
     :return:
     """
-    try:
-        group_name = config.Group.name
-    except AttributeError:
-        group_name = uidname()
     _head_template = head_template.replace(u"<<group>>", group_name)
-    exec_script = config.Group.exec_script
 
     files = [i for i in f_dict.keys() if not py_check.match(i) is None]
     module_dict = {filePathToModuleName(i): i for i in files}
     package_dict = {u".".join(k.split(u".")[:-1]): v for k, v in module_dict.items()
                     if k.split(u".")[-1] == u"__init__"}
     package_dict = {k: v for k, v in package_dict.items() if k != u""}
-    print (module_dict)
-    print (package_dict)
 
     def importFn(this_name, node):
         u"""
@@ -129,18 +116,24 @@ def group(f_dict, config):
 
     for name, path in module_dict.items():
         if not build_file_check.match(path) is None:
+            logging.info(u"build %s" % path)
             f_dict[path] = build(f_dict[path], lambda i: importFn(name, i), lambda i: importFromFn(name, i))
-            # this_package = u".".join(name.split(u".")[:-1])
-            # f_dict[path] = _head_template.replace(u"<<module>>", name).replace(u"<<package>>", this_package) + f_dict[path]
 
-    for name, path in module_dict.items()+package_dict.items():
+    for name, path in module_dict.items() + package_dict.items():
         if len(name.split(u".")) == 1:
+            logging.info(u"add head %s" % path)
             f_dict[path] = _head_template.replace(u"<<name>>", name) + f_dict[path]
+
+    if not u"/__init__.py" in f_dict:
+        logging.info(u"add __init__.py")
+        f_dict[u"/__init__.py"] = "# plug group head"
 
     path_head_str = u"/" + group_name
     f_dict = {path_head_str + k: v for k, v in f_dict.items()}
 
-
-
     f_dict[u"/exec.py"] = build(exec_script, lambda i: importFn(u"-@", i), lambda i: importFromFn(u"-@", i))
     return f_dict
+
+
+def group(name, exec_script):
+    return lambda f_dict, config: _main(name, exec_script, f_dict, config)

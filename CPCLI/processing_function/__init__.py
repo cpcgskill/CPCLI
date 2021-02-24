@@ -10,3 +10,6 @@ u"""
 :bilibili: https://space.bilibili.com/351598127
 
 """
+from .addhead import addhead
+from .delete_blank_lines import deleteBlankLines
+from .delete_useless_strings import deleteUselessStrings

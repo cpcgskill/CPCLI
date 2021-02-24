@@ -12,34 +12,38 @@ u"""
 """
 import re
 import CPCLI.core as cli_core
-from CPCLI.utils import decode
-from CPCLI.processing.group import group
+from CPCLI.overall_processing_function import group
+from CPCLI.file_filtering_functions import noTypes
+from CPCLI.processing_function import deleteBlankLines, deleteUselessStrings
+
 
 class Config(object):
     # 文件过滤函数
     file_filtering_functions = [
-        lambda file, config: not re.match(r".*", file) is None
+        noTypes(['pyc'])
     ]
     # 整体处理函数
     overall_processing_function = [
-        group
+        group(
+            name=u"TOOLS_2021_2_24",
+            exec_script=u'''\
+import main
+from main import main
+main()'''
+        )
     ]
     # 处理函数
     processing_function = [
+        deleteBlankLines,
+        deleteUselessStrings
     ]
     debug = True
 
     class Path(object):
-        src = r"D:\Development\CPCLI\test\src"
-        scripts = r"D:\Development\CPCLI\test\scripts"
-        build = r"D:\Development\CPCLI\test\build"
-
-    class Group(object):
-        name = "TTTT"
-        exec_script = u'''\
-import main
-from main import main
-main()'''
+        root = r"D:\Development\CPCLI\test"
+        src = root + r"\src"
+        scripts = root + r"\scripts"
+        build = root + r"\build"
 
 
 cli_core.build(Config)
