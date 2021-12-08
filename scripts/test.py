@@ -11,6 +11,7 @@ u"""
 
 """
 import re
+from __future__ import unicode_literals, print_function
 import CPCLI.core as cli_core
 from CPCLI.overall_processing_function import group
 from CPCLI.file_filtering_functions import noTypes
@@ -25,8 +26,9 @@ class Config(object):
     # 整体处理函数
     overall_processing_function = [
         group(
-            name=u"TOOLS_2021_2_24",
+            name=u"TOOL_NAME",
             exec_script=u'''\
+# 以下是启动脚本
 import main
 from main import main
 main()'''
@@ -34,13 +36,16 @@ main()'''
     ]
     # 处理函数
     processing_function = [
+        # 清除空行
         deleteBlankLines,
+        # 清除无用字符串
         deleteUselessStrings
     ]
+    # 可真可假影响不大
     debug = True
 
     class Path(object):
-        root = r"D:\Development\CPCLI\test"
+        root = r"项目根目录"
         src = root + r"\src"
         scripts = root + r"\scripts"
         build = root + r"\build"
