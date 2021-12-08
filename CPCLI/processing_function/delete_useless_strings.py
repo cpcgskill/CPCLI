@@ -37,6 +37,14 @@ def buildBlock(node):
 
 
 def deleteUselessStrings(file, code, config):
+    u"""
+    清除无用字符串
+
+    :param file:
+    :param code:
+    :param config:
+    :return:
+    """
     if not re_check.match(file) is None:
         nodes = ast.parse(code)
         buildBlock(nodes)

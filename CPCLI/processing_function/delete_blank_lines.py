@@ -16,6 +16,14 @@ re_check = re.compile(r".*\.py$")
 
 
 def deleteBlankLines(file, code, config):
+    """
+    清除空行
+
+    :param file:
+    :param code:
+    :param config:
+    :return:
+    """
     if not re_check.match(file) is None:
         code = code.replace("\r", "")
         code = "\r\n".join([i for i in code.split("\n") if len(i.replace(" ", "").replace("  ", "")) != 0])

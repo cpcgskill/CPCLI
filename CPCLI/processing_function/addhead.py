@@ -14,6 +14,13 @@ import re
 
 
 def addhead(re_check, head):
+    """
+    添加文件头
+
+    :param re_check:
+    :param head:
+    :return:
+    """
     re_check_o = re.compile(re_check)
 
     def _(file, code, config):
