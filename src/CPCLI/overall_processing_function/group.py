@@ -122,7 +122,7 @@ def _main(group_name, exec_script, f_dict, config):
     for name, path in module_dict.items() + package_dict.items():
         if len(name.split(u".")) == 1:
             logging.info(u"add head %s" % path)
-            f_dict[path] = _head_template.replace(u"<<name>>", name) + f_dict[path]
+            f_dict[path] = u"{}\nexec({})".format(_head_template.replace(u"<<name>>", name), repr(f_dict[path]))
 
     if not u"/__init__.py" in f_dict:
         logging.info(u"add __init__.py")
