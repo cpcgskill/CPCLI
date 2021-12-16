@@ -21,6 +21,15 @@
 #!/usr/bin/python
 # -*-coding:utf-8 -*-
 from __future__ import unicode_literals, print_function
+
+# 因为是将库放在C:\Users\PC\Documents\maya\scripts下的所以需要初始化maya
+try:
+    import maya.standalone
+
+    maya.standalone.initialize()
+except:
+    pass
+
 import CPCLI.core as cli_core
 from CPCLI.overall_processing_function import group
 from CPCLI.file_filtering_functions import noTypes
