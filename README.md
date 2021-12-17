@@ -9,6 +9,15 @@
 
 ### 快速开始
 
+#### 如果你的Maya有pip那么
+
+```commandline
+cd "C:\Program Files\Autodesk\Maya2018\bin"
+mayapy -m pip install CP_CLI
+```
+
+#### 如果没有
+
 1. 打开C:\Users\PC\Documents\maya文件夹
 2. 进入scripts文件夹，如果没有就创建它
 3. 下载完整的CPCLI代码
