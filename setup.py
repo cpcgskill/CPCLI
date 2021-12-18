@@ -8,7 +8,7 @@ with open("README.md", "rb") as f:
 
 setuptools.setup(
     name="CP_CLI",
-    version="1.0.1",
+    version="1.0.2",
     author="cpcgskill",
     author_email="cpcgskill@outlook.com",
     description="python 打包编译工具",
