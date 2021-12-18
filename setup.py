@@ -32,11 +32,7 @@ setuptools.setup(
     packages=["CPCLI", "CPCLI.decorator", "CPCLI.overall_processing_function", "CPCLI.processing_function"],
     python_requires="==2.*,",
     # 指定依赖
-    # install_requires=[
-    #     'requests',
-    #     'flask>=1.0'
-    #     'setuptools==38.2.4',
-    #     'django>=1.11, !=1.11.1, <=2',
-    #     'requests[security, socks]>=2.18.4',
-    # ]
+    install_requires=[
+        'astunparse==1.6.3',
+    ]
 )
