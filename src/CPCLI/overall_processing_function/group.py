@@ -10,12 +10,12 @@ u"""
 :bilibili: https://space.bilibili.com/351598127
 
 """
-
+import re
 import logging
 import ast
 import astunparse
 from CPCLI.utils import uidname, formattedPath
-import re
+from ._future_top import future_top
 
 py_check = re.compile(r".*\.py[cdowz]?$")
 build_file_check = re.compile(r".*\.py$")
@@ -122,7 +122,7 @@ def _main(group_name, exec_script, f_dict, config):
     for name, path in module_dict.items() + package_dict.items():
         if len(name.split(u".")) == 1:
             print(u"add head %s" % path)
-            f_dict[path] = u"{}\nexec({})".format(_head_template.replace(u"<<name>>", name), repr(f_dict[path]))
+            f_dict[path] = u"{}{}".format(_head_template.replace(u"<<name>>", name), f_dict[path])
 
     if not u"/__init__.py" in f_dict:
         logging.info(u"add __init__.py")
@@ -132,7 +132,7 @@ def _main(group_name, exec_script, f_dict, config):
     f_dict = {path_head_str + k: v for k, v in f_dict.items()}
 
     f_dict[u"/exec.py"] = build(exec_script, lambda i: importFn(u"-@", i), lambda i: importFromFn(u"-@", i))
-    return f_dict
+    return future_top(f_dict)
 
 
 def group(name, exec_script):

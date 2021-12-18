@@ -24,7 +24,7 @@ mayapy -m pip install CP_CLI
 4. 解压并进入解压完成的文件夹
 5. 将src目录中的CPCLI文件夹复制到scripts
 6. 打开maya2018，如果已经打开了就重启它
-7. 创建test.python并添加以下代码
+#### 创建test.py并添加以下代码
 
 ```python
 #!/usr/bin/python
