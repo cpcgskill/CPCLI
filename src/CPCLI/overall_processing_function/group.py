@@ -116,12 +116,12 @@ def _main(group_name, exec_script, f_dict, config):
 
     for name, path in module_dict.items():
         if not build_file_check.match(path) is None:
-            logging.info(u"build %s" % path)
+            print(u"build %s" % path)
             f_dict[path] = build(f_dict[path], lambda i: importFn(name, i), lambda i: importFromFn(name, i))
 
     for name, path in module_dict.items() + package_dict.items():
         if len(name.split(u".")) == 1:
-            logging.info(u"add head %s" % path)
+            print(u"add head %s" % path)
             f_dict[path] = u"{}\nexec({})".format(_head_template.replace(u"<<name>>", name), repr(f_dict[path]))
 
     if not u"/__init__.py" in f_dict:
