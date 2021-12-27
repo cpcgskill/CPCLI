@@ -25,7 +25,8 @@ def filter_node(nodes, key):
     """
     for b in ast.walk(nodes):
         if hasattr(b, "body"):
-            b.body = [i for i in b.body if key(i)]
+            if isinstance(b.body, list):
+                b.body = [i for i in b.body if key(i)]
 
 
 def future_top(f_dict):
